@@ -7,5 +7,22 @@ MDScreenManager
 
         # MDTopAppBar with correct positioning
         MDTopAppBar:
-            title: "Smart Home app"
+            title: "Smart Led Control"
             pos_hint: {"top": 1}  # Set top position at 1
+
+        FloatLayout:
+            MDCard:
+                size_hint: .9, .6
+                pos_hint: {'x': .05, 'y': .25}
+            MDLabel:
+                id: resp
+                text: ""
+                pos_hint: {'x': .45, 'y': .4}
+            MDRoundFlatButton:
+                text: "Led 1"
+                pos_hint: {'x': .2, 'y': .5}
+                on_release: root.toggel_led(self)
+            MDRoundFlatButton:
+                text: "Led 2"
+                pos_hint: {'x': .7, 'y': .5}
+                on_release: root.toggel_led(self)
