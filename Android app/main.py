@@ -3,14 +3,14 @@ from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 
-main_server = "http://192.168.0.111:5000"
+#main_server = "192.168.0.104:5000"
 
 class Home(MDScreen):
     def toggel_led(self, btn):
-        ip = self.ids.ip.text
+        tunnles = self.ids.ip.text
         try:
             rout = btn.text.replace(" ", "").upper()
-            get(f"{main_server}/room1/{rout}")
+            get(f"http://{tunnles}/room1/{rout}")
             #self.ids.resp.text = url
         except ConnectTimeout:
             self.ids.resp.text = "Connection Timeout"
