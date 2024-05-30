@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} Room-1 {% endblock %}
+
+{% block content %}
+
+{% for led in leds %}
+
+<h2><a href="{{ url_for("toggle", led=led+1) }}">toggel led {{ led+1 }}</a></h2>
+
+{% else %}
+
+<p>No leds Found</p>
+
+{% endfor %}
+
+{% endblock %}
