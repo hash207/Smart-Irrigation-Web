@@ -15,7 +15,6 @@ def room_1():
 
 @app.route("/")
 def home():
-    post("http://192.168.0.105/LED1")
     return render_template("home.html")
 
 if __name__ == "__main__":
