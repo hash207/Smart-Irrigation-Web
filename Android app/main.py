@@ -18,5 +18,11 @@ class main_app(MDApp):
         self.theme_cls.primary_palette = "Indigo"
         return Builder.load_file("design.kv")
 
+    def toggle_theme_style(self, instance):
+        if self.theme_cls.theme_style == "Dark":
+            self.theme_cls.theme_style = "Light"
+        else:
+            self.theme_cls.theme_style = "Dark"
+
 if __name__ == "__main__":
     main_app().run()
