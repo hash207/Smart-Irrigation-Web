@@ -1,4 +1,4 @@
-from requests import get, ConnectTimeout
+from requests import get
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
@@ -7,9 +7,9 @@ class Home(MDScreen):
     def toggel_led(self, btn):
         tunnles = "starfish-regular-lightly.ngrok-free.app"
         try:
-            rout = btn.text.replace(" ", "").upper()
+            rout = btn.text.replace(" ", "_").lower()
             get(f"http://{tunnles}/room1/{rout}")
-        except ConnectTimeout:
+        except:
             self.ids.resp.text = "Connection Timeout"
 
 class main_app(MDApp):

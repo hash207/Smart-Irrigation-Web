@@ -1,17 +1,17 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template
 from requests import post
 
 app = Flask(__name__)
 first_room = "http://192.168.0.105"
 
-@app.route("/room1/LED<int:led>")
+@app.route("/room1/<string:led>")
 def toggle(led):
-    post(f"{first_room}/LED{led}")
+    post(f"{first_room}/{led}")
     return room_1()
 
 @app.route("/room1")
 def room_1():
-    return render_template("room1.html", leds=range(2))
+    return render_template("room1.html", leds=["main_led", "secindary_led"])
 
 @app.route("/")
 def home():

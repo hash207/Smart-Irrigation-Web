@@ -6,7 +6,7 @@
 
 {% for led in leds %}
 
-<h2><a href="{{ url_for("toggle", led=led+1) }}">toggel led {{ led+1 }}</a></h2>
+<h2><a href="{{ url_for("toggle", led=led) }}">Toggle led {{ led }}</a></h2>
 
 {% else %}
 
