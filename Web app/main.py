@@ -1,15 +1,15 @@
+import paho.mqtt.client as mqtt
 from flask import Flask, render_template
-from requests import post, ConnectTimeout
 
 app = Flask(__name__)
-first_room = "http://192.168.0.105"
+Broker = "test.mosquitto.org"
+client = mqtt.Client()
 
 @app.route("/room1/<string:led>")
 def toggle(led):
-    try:
-        post(f"{first_room}/{led}")
-    except ConnectTimeout:
-        pass
+    client.connect(Broker)
+    client.publish("inTopic", "toggle")
+    client.disconnect()
     return room_1()
 
 @app.route("/room1")
