@@ -1,87 +1,114 @@
-//#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
 
-#define SERIAL_BAUD 9600
+// Update these with values suitable for your network.
 
-SoftwareSerial espSerial(D1, D0); // RX, TX
+const char* ssid = "dlink-M961-2.4G-6fa6";
+const char* password = "csffb76673";
+const char* mqtt_server = "test.mosquitto.org";
 
-ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
+WiFiClient espClient;
+PubSubClient client(espClient);
+unsigned long lastMsg = 0;
+#define MSG_BUFFER_SIZE	(50)
+char msg[MSG_BUFFER_SIZE];
+int value = 0;
 
-ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
+void setup_wifi() {
 
-const char *html =
-  "<form action=\"/main_led\" method=\"POST\"><input type=\"submit\" value=\"Toggle LED1\"></form>"
-  "<form action=\"/secindary_led\" method=\"POST\"><input type=\"submit\" value=\"Toggle LED2\"></form>"
-  "<p></p>";
+  delay(10);
+  // We start by connecting to a WiFi network
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
 
-void handleRoot();              // function prototypes for HTTP handlers
-void handleLED_1();
-void handleLED_2();
-void handleNotFound();
-void connectToWiFi();           // function prototype for connectToWiFi
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
 
-void setup(void){
-  Serial.begin(9600);         // Start the Serial communication to send messages to the computer
-  espSerial.begin(SERIAL_BAUD);
-  Serial.println('\n');
-
-  wifiMulti.addAP("dlink-M961-2.4G-6fa6", "csffb76673");   // add Wi-Fi networks you want to connect to
-  //wifiMulti.addAP("Hashem_EXT", "csffb76673");   // add Wi-Fi networks you want to connect to
-
-  Serial.println("Connecting ...");
-  connectToWiFi();             // Call the connectToWiFi function
-
-  Serial.println("Connected to ");
-  Serial.println(WiFi.SSID());              // Tell us what network we're connected to
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());           // Send the IP address of the ESP8266 to the computer
-
-  server.on("/", HTTP_GET, handleRoot);     // Call the 'handleRoot' function when a client requests URI "/"
-  server.on("/main_led", HTTP_POST, handleLED_1);  // Call the 'handleLED_1' function when a POST request is made to URI "/LED1"
-  server.on("/secindary_led", HTTP_POST, handleLED_2);  // Call the 'handleLED_2' function when a POST request is made to URI "/LED2"
-  server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
-
-  server.begin();                           // Actually start the server
-  Serial.println("HTTP server started");
-}
-
-void loop(void){
-  if (WiFi.status() != WL_CONNECTED) {
-    connectToWiFi();         // Call the connectToWiFi function if WiFi is not connected
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
-  server.handleClient();                    // Listen for HTTP requests from clients
+
+  randomSeed(micros());
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
-void handleRoot() {                         // When URI / is requested, send a web page with a button to toggle the LED
-  server.send(200, "text/html", html);
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+
+  // Switch on the LED if an 1 was received as first character
+  if ((char)payload[0] == 't') {
+    digitalWrite(BUILTIN_LED, !digitalRead(BUILTIN_LED));   // Turn the LED on (Note that LOW is the voltage level
+    // but actually the LED is on; this is because
+    // it is active low on the ESP-01)
+  } else {
+    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
+  }
+
 }
 
-void handleLED_1() {                          // If a POST request is made to URI /LED
-  espSerial.println(String("13"));
-  server.sendHeader("Location","/");        // Add a header to respond with a new location for the browser to go to the home page again
-  server.send(303);                         // Send it back to the browser with an HTTP status 303 (See Other) to redirect
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Create a random client ID
+    String clientId = "ESP8266Client-";
+    clientId += String(random(0xffff), HEX);
+    // Attempt to connect
+    if (client.connect(clientId.c_str())) {
+      Serial.println("connected");
+      // Once connected, publish an announcement...
+      client.publish("outTopic", "hello world");
+      // ... and resubscribe
+      client.subscribe("inTopic");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
 }
 
-void handleLED_2(){
-  espSerial.println(String("12"));      // Change the state of the LED
-  server.sendHeader("Location","/");        // Add a header to respond with a new location for the browser to go to the home page again
-  server.send(303);                         // Send it back to the browser with an HTTP status 303 (See Other) to redirect
+void setup() {
+  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  Serial.begin(9600);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
 }
 
-void handleNotFound(){
-  server.send(404, "text/plain", "404: Not found"); // Send HTTP status 404 (Not Found) when there's no handler for the URI in the request
-}
+void loop() {
 
-void connectToWiFi() {
-  int i = 0;
-  while (wifiMulti.run() != WL_CONNECTED) { // Wait for the Wi-Fi to connect: scan for Wi-Fi networks, and connect to the strongest of the networks above
-    delay(250);
-    Serial.print('.');
-    // digitalWrite(GPIO_1, 1);
-    // delay(100);
-    // digitalWrite(GPIO_1, 0);
-    // delay(100);
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  unsigned long now = millis();
+  if (now - lastMsg > 2000) {
+    if (Serial.available() > 0) {
+      int d = Serial.parseInt();
+      digitalWrite(d, !digitalRead(d));
+      // Use the received data to control LED and buzzer
+  }
+    lastMsg = now;
+    ++value;
+    snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
+    Serial.print("Publish message: ");
+    Serial.println(msg);
+    client.publish("outTopic", msg);
   }
 }
