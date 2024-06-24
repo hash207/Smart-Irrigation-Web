@@ -3,14 +3,18 @@ from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 
+def responce(status_code, btn):
+    if status_code == 200:
+        return f"Toggle {btn}"
+    elif status_code == 404:
+        return f"Server is down"
+
 class Home(MDScreen):
     def toggel_led(self, btn):
         tunnles = "starfish-regular-lightly.ngrok-free.app"
-        try:
-            rout = btn.text.replace(" ", "_").lower()
-            get(f"http://{tunnles}/room1/{rout}")
-        except:
-            self.ids.resp.text = "Connection Timeout"
+        rout = btn.text.replace(" ", "_").lower()
+        resp = get(f"http://{tunnles}/room1/{rout}")
+        self.ids.resp.text = f"{responce(resp.status_code, btn.text)}"
 
 class main_app(MDApp):
     def build(self):
