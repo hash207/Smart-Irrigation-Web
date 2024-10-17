@@ -14,7 +14,7 @@ def toggle(led):
 
 @app.route("/room1")
 def room_1():
-    return render_template("room1.html", leds=["main_led", "secindary_led"])
+    return render_template("room1.html", leds=["Main led", "Secindary LED", "Third LED"])
 
 @app.route("/")
 def home():
