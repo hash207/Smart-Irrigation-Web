@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 
 app = Flask(__name__)
 Broker = "test.mosquitto.org"
@@ -10,7 +10,7 @@ def toggle(led):
     client.connect(Broker)
     client.publish("inTopic", "toggle")
     client.disconnect()
-    return room_1()
+    return redirect(url_for('room_1'))
 
 @app.route("/room1")
 def room_1():
