@@ -1,0 +1,8 @@
+modules = ["cpp-clang14", "python-3.12", "web", "bash"]
+run = "bash run.sh"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "bash run.sh"]
