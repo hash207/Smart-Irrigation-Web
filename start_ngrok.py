@@ -13,8 +13,8 @@ if not auth_token:
     raise Exception("Please set NGROK_AUTH_TOKEN in Replit Secrets")
 ngrok.set_auth_token(auth_token)
 
-# Start ngrok tunnel
-url = ngrok.connect(5000)
+# Start ngrok tunnel with static domain
+url = ngrok.connect(5000, hostname="starfish-regular-lightly.ngrok-free.app")
 print(f'Ngrok tunnel is running at: {url}')
 
 # Keep the tunnel open
