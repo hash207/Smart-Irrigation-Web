@@ -8,7 +8,7 @@ os.makedirs(ngrok_path, exist_ok=True)
 conf.get_default().ngrok_path = os.path.join(ngrok_path, "ngrok")
 
 # Set auth token
-auth_token = os.getenv("NGROK_AUTH_TOKEN")
+auth_token = os.environ["NGROK_AUTH_TOKEN"]
 if not auth_token:
     raise Exception("Please set NGROK_AUTH_TOKEN in Replit Secrets")
 ngrok.set_auth_token(auth_token)
