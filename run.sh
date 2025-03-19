@@ -8,4 +8,7 @@ python "Web app/main.py" &
 sleep 3
 
 # Start ngrok tunnel
-python start_ngrok.py
+python any/start_ngrok.py
+
+# End working in background
+python any/kill.py

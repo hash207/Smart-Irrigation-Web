@@ -1,3 +1,4 @@
 Flask
 kivymd
+pyngrok
 paho-mqtt
