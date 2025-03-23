@@ -2,3 +2,5 @@ Flask
 kivymd
 pyngrok
 paho-mqtt
+buildozer
+setuptools

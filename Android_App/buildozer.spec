@@ -10,7 +10,7 @@ package.name = smarthomeapp
 package.domain = everysolver.org
 
 # (str) Soucre code where the main.py live
-source.dir = ./Project/
+source.dir = ./
 
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py, png, kv, json
@@ -47,7 +47,7 @@ requirements = kivy==2.3.0,kivymd==1.1.1,pillow==10.2.0,requests
 #presplash.filename = ./Project/icon.png
 
 # (str) Icon of the application
-icon.filename = ./Project/icon.png
+icon.filename = ./icon.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -87,7 +87,7 @@ fullscreen = 0
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
 # for general documentation.
 # Lottie files can be created using various tools, like Adobe After Effect or Synfig.
-android.presplash_lottie = ./Project/start.json
+android.presplash_lottie = ./start.json
 
 # (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
 #icon.adaptive_foreground.filename = %(source.dir)s/data/icon_fg.png
