@@ -4,3 +4,5 @@ pyngrok
 paho-mqtt
 buildozer
 setuptools
+virtualenv
+Cython==0.29.33
