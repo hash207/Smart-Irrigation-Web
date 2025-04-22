@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 from flask import Flask, render_template, redirect, url_for
 
 app = Flask(__name__)
-Broker = "test.mosquitto.org"
+Broker = "broker.emqx.io"
 client = mqtt.Client()
 
 # Callback function to handle messages from the "fromPhone" topic
@@ -11,13 +11,13 @@ def on_message(client, userdata, msg):
 
 # Set up the MQTT client
 client.on_message = on_message
-client.connect(Broker)
-client.subscribe("fromPhone")
+client.connect(Broker, 1883)
+client.subscribe("HashESP")
 client.loop_start()  # Start the MQTT loop in a separate thread
 
 @app.route("/room1/<string:led>")
 def toggle(led):
-    client.publish("inTopic", "toggle")
+    client.publish("HashLAP", f"{led}")
     return redirect(url_for('room_1'))
 
 @app.route("/room1")

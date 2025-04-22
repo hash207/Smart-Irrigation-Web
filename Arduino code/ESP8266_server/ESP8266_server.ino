@@ -3,9 +3,10 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "dlink-M961-2.4G-6fa6";
+const char* ssid = "Hashem_EXT";
 const char* password = "csffb76673";
-const char* mqtt_server = "test.mosquitto.org";
+const char* mqtt_server = "broker.emqx.io";
+const int* mqtt_port = 1883
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -68,16 +69,13 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      // Once connected, publish an announcement...
-      //client.publish("outTopic", "hello world");
-      // ... and resubscribe
-      client.subscribe("inTopic");
+      client.subscribe("HashLAP");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
+      Serial.println(" try again in 2 seconds");
+      // Wait 2 seconds before retrying
+      delay(2000);
     }
   }
 }
@@ -86,7 +84,7 @@ void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(9600);
   setup_wifi();
-  client.setServer(mqtt_server, 1883);
+  client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
 
@@ -107,8 +105,8 @@ void loop() {
     lastMsg = now;
     ++value;
     snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
-    //Serial.print("Publish message: ");
-    //Serial.println(msg);
-    //client.publish("outTopic", msg);
+    Serial.print("Publish message: ");
+    Serial.println(msg);
+    client.publish("HashESP", msg);
   }
 }
