@@ -6,7 +6,7 @@
 const char* ssid = "Hashem_EXT";
 const char* password = "csffb76673";
 const char* mqtt_server = "broker.emqx.io";
-const int* mqtt_port = 1883
+const int mqtt_port = 1883;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
