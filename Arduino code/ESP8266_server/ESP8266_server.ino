@@ -96,14 +96,6 @@ void loop() {
   }
   client.loop();
 
-  unsigned long now = millis();
-  if (now - lastMsg > 2000) {
-    if (Serial.available() > 0) {
-      int d = Serial.parseInt();
-      digitalWrite(d, !digitalRead(d));
-      // Use the received data to control LED and buzzer
-  }
-  }
   float threshold = 30.0;
   float sensorValue = analogRead(A0);
   float diff_per = (abs((sensorValue - lastValue))/lastValue)*100;
