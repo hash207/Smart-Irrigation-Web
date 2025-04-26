@@ -69,7 +69,7 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      client.subscribe("HashLAP");
+      client.subscribe("HashESP1");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -107,6 +107,6 @@ void loop() {
     snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
     Serial.print("Publish message: ");
     Serial.println(msg);
-    client.publish("HashESP", msg);
+    client.publish("HashLAP", msg);
   }
 }

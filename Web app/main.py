@@ -7,17 +7,19 @@ client = mqtt.Client()
 
 # Callback function to handle messages from the "fromPhone" topic
 def on_message(client, userdata, msg):
-    print(f"Received message from topic {msg.topic}: {msg.payload.decode()}")
+    data = msg.payload.decode()
+    topic = msg.topic
+    print(f"Received message from topic {topic}: {data}")
 
 # Set up the MQTT client
 client.on_message = on_message
 client.connect(Broker, 1883)
-client.subscribe("HashESP")
+client.subscribe("HashLAP")
 client.loop_start()  # Start the MQTT loop in a separate thread
 
 @app.route("/room1/<string:led>")
 def toggle(led):
-    client.publish("HashLAP", f"{led}")
+    client.publish("HashESP1", f"{led}")
     return redirect(url_for('room_1'))
 
 @app.route("/room1")
