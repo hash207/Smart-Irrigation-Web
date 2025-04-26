@@ -87,6 +87,7 @@ void setup() {
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
+float lastValue = 0.0;
 
 void loop() {
 
@@ -102,11 +103,20 @@ void loop() {
       digitalWrite(d, !digitalRead(d));
       // Use the received data to control LED and buzzer
   }
-    lastMsg = now;
-    ++value;
-    snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("HashLAP", msg);
   }
+  float threshold = 30.0;
+  float sensorValue = analogRead(A0);
+  float diff_per = (abs((sensorValue - lastValue))/lastValue)*100;
+  Serial.print("Sensor value: ");
+  Serial.println(sensorValue);
+  Serial.print("Differenc perceniteg is: ");
+  Serial.println(diff_per);
+  delay(1000);
+  lastValue = sensorValue;
+  String stringData = String(sensorValue, 2);
+
+  if (diff_per > threshold){
+    client.publish("HashLAP", stringData.c_str());
+  }
+
 }
