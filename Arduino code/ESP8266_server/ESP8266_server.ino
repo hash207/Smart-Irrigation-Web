@@ -14,6 +14,7 @@ unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE	(50)
 char msg[MSG_BUFFER_SIZE];
 int value = 0;
+float lastValue = 0.0;
 
 void setup_wifi() {
 
@@ -80,22 +81,7 @@ void reconnect() {
   }
 }
 
-void setup() {
-  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
-  Serial.begin(9600);
-  setup_wifi();
-  client.setServer(mqtt_server, mqtt_port);
-  client.setCallback(callback);
-}
-float lastValue = 0.0;
-
-void loop() {
-
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
-
+void sendData() {
   float threshold = 30.0;
   float sensorValue = analogRead(A0);
   float diff_per = (abs((sensorValue - lastValue))/lastValue)*100;
@@ -110,5 +96,23 @@ void loop() {
   if (diff_per > threshold){
     client.publish("HashLAP", stringData.c_str());
   }
+}
+
+void setup() {
+  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  Serial.begin(9600);
+  setup_wifi();
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(callback);
+}
+
+void loop() {
+
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  sendData();
 
 }

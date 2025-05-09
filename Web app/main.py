@@ -1,7 +1,11 @@
 import paho.mqtt.client as mqtt
+import eventlet as evl
+from flask_socketio import SocketIO
 from flask import Flask, render_template, redirect, url_for
 
+evl.monkey_patch()
 app = Flask(__name__)
+socketio = SocketIO(app)
 Broker = "broker.emqx.io"
 client = mqtt.Client()
 
@@ -10,6 +14,7 @@ def on_message(client, userdata, msg):
     data = msg.payload.decode()
     topic = msg.topic
     print(f"Received message from topic {topic}: {data}")
+    socketio.emit("moisture_update", {"value": data})
 
 # Set up the MQTT client
 client.on_message = on_message
@@ -31,4 +36,4 @@ def home():
     return render_template("home.html")
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", debug=True)
+    socketio.run(app, host="0.0.0.0", port=5000, debug=True, use_reloader=False)

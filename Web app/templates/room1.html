@@ -24,4 +24,15 @@
     </span>
 </button>
 
+<h2>Soil Moisture:</h2>
+<div id="moisture">Waiting...</div>
+
+<script>
+const socket = io();
+
+socket.on("moisture_update", data => {
+    document.getElementById("moisture").textContent = data.value + " %";
+});
+</script>
+
 {% endblock %}
