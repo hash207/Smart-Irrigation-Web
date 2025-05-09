@@ -1,9 +1,10 @@
+import eventlet
+eventlet.monkey_patch()
 import paho.mqtt.client as mqtt
-import eventlet as evl
 from flask_socketio import SocketIO
 from flask import Flask, render_template, redirect, url_for
 
-evl.monkey_patch()
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 Broker = "broker.emqx.io"

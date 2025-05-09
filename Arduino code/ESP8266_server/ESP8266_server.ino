@@ -48,16 +48,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
-
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == 't') {
-    digitalWrite(BUILTIN_LED, !digitalRead(BUILTIN_LED));   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is active low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
-  }
-
 }
 
 void reconnect() {
@@ -82,7 +72,7 @@ void reconnect() {
 }
 
 void sendData() {
-  float threshold = 30.0;
+  float threshold = 25.0;
   float sensorValue = analogRead(A0);
   float diff_per = (abs((sensorValue - lastValue))/lastValue)*100;
   Serial.print("Sensor value: ");
