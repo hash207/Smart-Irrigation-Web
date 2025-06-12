@@ -5,7 +5,7 @@ An IoT-based smart irrigation system built using:
 - **Arduino Uno + NodeMCU (ESP8266)** for reading soil moisture sensors and sending data
 - **Raspberry Pi 4** running a **Flask web server** to monitor and log sensor readings
 - **MQTT protocol** for efficient communication between devices
-- **Ngrok** to expose the Flask web app to the internet
+- **DDNS** to expose the Flask web app to the internet with a free access domain 
 
 ---
 
@@ -36,23 +36,23 @@ The system improves water efficiency and gives users remote access via a live da
 | Broker | Mosquitto (can be local or hosted) |
 | Web Interface | Flask + HTML |
 | Deployment | Docker (optional) |
-| Tunneling | Ngrok (Free Static URL) |
+| Publishing | DDNS (Dynamic Domain Name Service) |
 
 ---
 
 ## 🌐 Live Access
 
 The web dashboard is publicly accessible via:
-**[https://starfish-regular-lightly.ngrok-free.app](https://starfish-regular-lightly.ngrok-free.app)**
+**[everysolver.ddns.net](https://everysolver.ddns.net)**
 
-(Note: Ngrok free static IPs may sleep when idle.)
+(Note: DDNS free static IPs may sleep when idle.)
 
 ---
 
 ## 📡 Communication Logic
 
 - NodeMCU reads moisture values and compares them to the last value.
-- If the change exceeds the threshold (e.g., 10%), it sends data to the MQTT broker.
+- If the change exceeds the threshold (e.g., 25%), it sends data to the MQTT broker.
 - Flask web app subscribes to the topic and updates the web interface in real-time.
 
 ---
