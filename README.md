@@ -36,14 +36,14 @@ The system improves water efficiency and gives users remote access via a live da
 | Broker | Mosquitto (can be local or hosted) |
 | Web Interface | Flask + HTML |
 | Deployment | Docker (optional) |
-| Publishing | DDNS (Dynamic Domain Name Service) |
+| Publishing | DDNS (Dynamic Domain Name System) |
 
 ---
 
 ## 🌐 Live Access
 
 The web dashboard is publicly accessible via:
-**[everysolver.ddns.net](https://everysolver.ddns.net)**
+**[everysolver.ddns.net](http://everysolver.ddns.net)**
 
 (Note: DDNS free static IPs may sleep when idle.)
 
