@@ -1,14 +1,13 @@
 import eventlet
 eventlet.monkey_patch()
-import paho.mqtt.client as mqtt
+from paho.mqtt.client import Client
 from flask_socketio import SocketIO
 from flask import Flask, render_template, redirect, url_for
-
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 Broker = "broker.emqx.io"
-client = mqtt.Client()
+client = Client()
 
 # Callback function to handle messages from the "fromPhone" topic
 def on_message(client, userdata, msg):
@@ -23,9 +22,9 @@ client.connect(Broker, 1883)
 client.subscribe("HashLAP")
 client.loop_start()  # Start the MQTT loop in a separate thread
 
-@app.route("/room1/<string:led>")
-def toggle(led):
-    client.publish("HashESP1", f"{led}")
+@app.route("/room1/<string:room_1_leds>")
+def toggle(room_1_leds):
+    client.publish("HashESP1", f"{room_1_leds}")
     return redirect(url_for('room_1'))
 
 @app.route("/room1")

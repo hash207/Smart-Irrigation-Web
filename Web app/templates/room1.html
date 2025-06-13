@@ -6,7 +6,7 @@
 
 {% for led in leds %}
 
-<button type="button" onclick="location.href='{{ url_for('toggle', led=led) }}'">
+<button type="button" onclick="location.href='{{ url_for('toggle', room_1_leds=led) }}'">
     <span class="text">
         Toggle led {{ led }}
     </span>
