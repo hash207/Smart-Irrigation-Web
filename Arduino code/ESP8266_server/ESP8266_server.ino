@@ -3,8 +3,8 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "IOT_SSID";
-const char* password = "had207@2";
+const char* ssid = "Hashem_EXT";
+const char* password = "csffb76673";
 const char* mqtt_server = "broker.emqx.io";
 const int mqtt_port = 1883;
 
