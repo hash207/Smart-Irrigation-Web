@@ -19,7 +19,7 @@ def on_message(client, userdata, msg):
 # Set up the MQTT client
 client.on_message = on_message
 client.connect(Broker, 1883)
-client.subscribe("HashLAP")
+client.subscribe("hash/YL-69")
 client.loop_start()  # Start the MQTT loop in a separate thread
 
 @app.route("/room1/<string:room_1_leds>")
