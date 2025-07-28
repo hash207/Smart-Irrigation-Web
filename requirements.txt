@@ -1,5 +1,6 @@
 Flask
 kivymd
+pyngrok
 eventlet
 paho-mqtt
 buildozer
