@@ -15,6 +15,7 @@ unsigned long lastMsg = 0;
 char msg[MSG_BUFFER_SIZE];
 int value = 0;
 float lastValue = 0.0;
+String data;
 
 void setup_wifi() {
 
@@ -30,6 +31,7 @@ void setup_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    digitalWrite(D2,  !digitalRead(D2));
   }
 
   randomSeed(micros());
@@ -58,10 +60,13 @@ void reconnect() {
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
+    digitalWrite(D1, !digitalRead(D1));
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       client.subscribe("HashESP1");
+      digitalWrite(D1, 1);
     } else {
+      digitalWrite(D1, 0);
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 2 seconds");
@@ -71,25 +76,18 @@ void reconnect() {
   }
 }
 
-void sendData() {
-  float threshold = 25.0;
-  float sensorValue = analogRead(A0);
-  float diff_per = (abs((sensorValue - lastValue))/lastValue)*100;
-  Serial.print("Sensor value: ");
-  Serial.println(sensorValue);
-  Serial.print("Differenc perceniteg is: ");
-  Serial.println(diff_per);
-  delay(1000);
-  lastValue = sensorValue;
-  String stringData = String(sensorValue, 2);
-
-  if (diff_per > threshold){
-    client.publish("HashLAP", stringData.c_str());
+void sendData()  {
+  if (Serial.available()){
+    data = Serial.readStringUntil('/');
+    Serial.println(data);
+    client.publish("hash/YL-69", data.c_str());
   }
 }
 
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  pinMode(D1, OUTPUT);
+  pinMode(D2, OUTPUT);
   Serial.begin(9600);
   setup_wifi();
   client.setServer(mqtt_server, mqtt_port);
