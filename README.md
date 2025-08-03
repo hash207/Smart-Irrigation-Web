@@ -25,4 +25,4 @@ You can containerize this app using Docker or deploy it directly on a Raspberry 
 Live Access
 
 This app is accessible at:
-🌐 https://starfish-regular-lightly.ngrok-free.app
+🌐 https://safe-shiner-daring.ngrok-free.app
