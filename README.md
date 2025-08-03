@@ -1,66 +1,28 @@
-# Smart Irrigation System
+# Smart Irrigation - Flask Web App
 
-An IoT-based smart irrigation system built using:
+This is the backend web application for the Smart Irrigation System. It receives real-time soil moisture data via MQTT and visualizes it. The app is built with Flask and uses Socket.IO for live updates. Hosted using Ngrok or locally on a Raspberry Pi.
 
-- **Arduino Uno + NodeMCU (ESP8266)** for reading soil moisture sensors and sending data
-- **Raspberry Pi 4** running a **Flask web server** to monitor and log sensor readings
-- **MQTT protocol** for efficient communication between devices
-- **DDNS** to expose the Flask web app to the internet with a free access domain 
+## Features
 
----
+- Live soil moisture monitoring (via MQTT)
+- Water valve control interface
+- Ngrok integration for secure remote access
+- Modular and Docker-compatible
 
-## 🌱 Project Goal
+## Setup
 
-Automatically monitor and control garden irrigation based on real-time soil moisture data.  
-The system improves water efficiency and gives users remote access via a live dashboard.
+1. Clone this repo:  
+   ```git clone https://github.com/yourusername/smart-irrigation-web.git```
 
----
+2. Install dependencies:
+   ```pip install -r requirements.txt```
+3. Run the app:
+   ```source run.sh```
 
-## 🔧 Hardware Components
+## Deployment (Optional)
 
-- Arduino Uno (reading analog sensor data)
-- NodeMCU ESP8266 (for WiFi + MQTT publishing)
-- Soil moisture sensors
-- Relay module (to control water valves)
-- Raspberry Pi 4 (MQTT broker + web server)
-- Optional: LDR sensor for simulation/testing
+You can containerize this app using Docker or deploy it directly on a Raspberry Pi. Supports integration with MongoDB and n8n.
+Live Access
 
----
-
-## ⚙️ Software Stack
-
-| Component | Technology |
-|----------|------------|
-| Backend | Python + Flask |
-| Communication | MQTT via Eclipse Paho |
-| Broker | Mosquitto (can be local or hosted) |
-| Web Interface | Flask + HTML |
-| Deployment | Docker (optional) |
-| Publishing | DDNS (Dynamic Domain Name System) |
-
----
-
-## 🌐 Live Access
-
-The web dashboard is publicly accessible via:
-**[everysolver.ddns.net](http://everysolver.ddns.net)**
-
-(Note: DDNS free static IPs may sleep when idle.)
-
----
-
-## 📡 Communication Logic
-
-- NodeMCU reads moisture values and compares them to the last value.
-- If the change exceeds the threshold (e.g., 25%), it sends data to the MQTT broker.
-- Flask web app subscribes to the topic and updates the web interface in real-time.
-
----
-
-## 🐳 Docker Support
-
-To containerize the web server:
-
-```bash
-docker build -t smart-irrigation .
-docker run -d -p 5000:5000 smart-irrigation
+This app is accessible at:
+🌐 https://starfish-regular-lightly.ngrok-free.app
