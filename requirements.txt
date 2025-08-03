@@ -1,10 +1,5 @@
 Flask
-kivymd
 pyngrok
 eventlet
 paho-mqtt
-buildozer
-setuptools
-virtualenv
 flask-socketio
-Cython==0.29.33

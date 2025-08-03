@@ -1,4 +1,5 @@
+.gitignore
 smart_venv/
 Android_App/.buildozer
 Android_App/bin
-sender.py
+
