@@ -5,6 +5,7 @@ output = os.popen("netstat -lpnt | grep :5000").read()
 
 try:
     data = ''.join(re.findall('\d', output[output.index("N")+1:]))
+    data = data[:-1]
     os.popen(f"kill {data}")
     print("operation termenated succesfully")
 except ValueError:
