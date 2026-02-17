@@ -12,12 +12,18 @@ This is the backend web application for the Smart Irrigation System. It receives
 ## Setup
 
 1. Clone this repo:  
-   ```git clone https://github.com/yourusername/smart-irrigation-web.git```
+   ```
+   git clone https://github.com/hash207/smart-irrigation-web.git
+   ```
 
 2. Install dependencies:
-   ```pip install -r requirements.txt```
+   ```
+   pip install -r requirements.txt
+   ```
 3. Run the app:
-   ```source run.sh```
+   ```
+   source run.sh
+   ```
 
 ## Deployment (Optional)
 
@@ -25,4 +31,4 @@ You can containerize this app using Docker or deploy it directly on a Raspberry 
 Live Access
 
 This app is accessible at:
-🌐 https://safe-shiner-daring.ngrok-free.app
+[🌐](https://safe-shiner-daring.ngrok-free.app)
